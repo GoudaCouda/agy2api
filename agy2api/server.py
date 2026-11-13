@@ -93,8 +93,9 @@ def get_upstream_request_params(
     url = f"{config.base_url.rstrip('/')}/chat/completions"
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {config.api_key}",
     }
+    if config.api_key:
+        headers["Authorization"] = f"Bearer {config.api_key}"
     return url, headers, openai_req
 
 

@@ -25,9 +25,10 @@ class Config:
     default_model: str = DEFAULT_MODEL
     port: int = DEFAULT_PORT
     selected_models: List[str] = field(default_factory=list)
+    configured: bool = False
 
     def is_configured(self) -> bool:
-        return bool(self.api_key)
+        return self.configured or bool(self.api_key)
 
 def load_config(settings_path: Path | None = None) -> Config:
     path = settings_path or default_settings_path()
@@ -36,6 +37,7 @@ def load_config(settings_path: Path | None = None) -> Config:
     default_model = DEFAULT_MODEL
     port = DEFAULT_PORT
     selected_models: List[str] = []
+    configured = False
 
     if path.is_file():
         try:
@@ -45,7 +47,8 @@ def load_config(settings_path: Path | None = None) -> Config:
             if not isinstance(section, dict):
                 section = data.get("openai", {})
 
-            if isinstance(section, dict):
+            if isinstance(section, dict) and section:
+                configured = True
                 base_url = section.get("baseUrl", base_url)
                 api_key = section.get("apiKey", api_key)
                 default_model = section.get("defaultModel", default_model)
@@ -60,10 +63,12 @@ def load_config(settings_path: Path | None = None) -> Config:
     env_base = os.getenv("OPENAI_BASE_URL") or os.getenv("OPENAI_API_BASE")
     if env_base:
         base_url = env_base
+        configured = True
 
     env_key = os.getenv("OPENAI_API_KEY")
     if env_key:
         api_key = env_key
+        configured = True
 
     env_model = os.getenv("OPENAI_MODEL_NAME") or os.getenv("OPENAI_MODEL")
     if env_model:
@@ -82,6 +87,7 @@ def load_config(settings_path: Path | None = None) -> Config:
         default_model=default_model,
         port=port,
         selected_models=selected_models,
+        configured=configured,
     )
 
 def save_config(config: Config, settings_path: Path | None = None) -> None:
@@ -165,7 +171,7 @@ def interactive_setup(settings_path: Path | None = None) -> Config:
     base_url = base_url_input if base_url_input else current.base_url
     base_url = base_url.rstrip("/")
 
-    key_prompt = f"API Key [{'***' if current.api_key else 'required'}]: "
+    key_prompt = f"API Key [{'***' if current.api_key else 'optional'}]: "
     api_key_input = input(key_prompt).strip()
     api_key = api_key_input if api_key_input else current.api_key
 
@@ -201,6 +207,7 @@ def interactive_setup(settings_path: Path | None = None) -> Config:
         default_model="",
         port=current.port,
         selected_models=selected_models,
+        configured=True,
     )
     save_config(new_config, settings_path=settings_path)
     print(f"\n\033[1;32m[OK]\033[0m Configuration saved to {settings_path or default_settings_path()}")

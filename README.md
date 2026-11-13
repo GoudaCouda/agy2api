@@ -117,8 +117,8 @@ agy2api --setup
 *(You can also use the shorthand command `agy-setup`.)*
 
 You will be prompted for:
-- **Base URL**: e.g. `https://openrouter.ai/api/v1`, `https://api.deepseek.com/v1`, or `http://localhost:11434/v1`
-- **API Key**: your provider API key
+- **Base URL**: e.g. `https://openrouter.ai/api/v1`, `https://api.deepseek.com/v1`, `http://localhost:11434/v1`, or a Cloudflare tunnel
+- **API Key**: your provider API key (optional if using local Ollama, LM Studio, vLLM, or unauthenticated tunnel)
 - **Model Selection TUI**: optionally launch the interactive 32-model manager to pick models from your provider
 
 Settings are saved directly to `~/.gemini/settings.json` (shared across Antigravity CLI, IDE, and Desktop App).
