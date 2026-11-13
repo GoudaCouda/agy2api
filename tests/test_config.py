@@ -195,3 +195,28 @@ def test_interactive_setup_empty_api_key(tmp_path, monkeypatch):
     assert saved.is_configured() is True
 
 
+def test_interactive_setup_clear_existing_api_key(tmp_path, monkeypatch):
+    settings_file = tmp_path / "settings.json"
+    # Prepopulate with existing key
+    save_config(Config(base_url="https://api.openai.com/v1", api_key="sk-old-secret"), settings_path=settings_file)
+
+    # User enters local URL, types 'none' to clear the key, and skips TUI
+    user_inputs = iter(["http://localhost:11434/v1", "none", "n"])
+    monkeypatch.setattr("builtins.input", lambda _: next(user_inputs))
+
+    verified_calls = []
+    def fake_verify(base_url, api_key, **kwargs):
+        verified_calls.append((base_url, api_key))
+        return True, None, ["llama3"]
+
+    monkeypatch.setattr("agy2api.config.verify_models_endpoint", fake_verify)
+
+    from agy2api.config import interactive_setup
+    cfg = interactive_setup(settings_path=settings_file)
+    assert verified_calls == [("http://localhost:11434/v1", "")]
+    assert cfg.api_key == ""
+
+    saved = load_config(settings_path=settings_file)
+    assert saved.api_key == ""
+
+

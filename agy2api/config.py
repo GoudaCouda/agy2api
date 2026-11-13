@@ -171,9 +171,17 @@ def interactive_setup(settings_path: Path | None = None) -> Config:
     base_url = base_url_input if base_url_input else current.base_url
     base_url = base_url.rstrip("/")
 
-    key_prompt = f"API Key [{'***' if current.api_key else 'optional'}]: "
+    if current.api_key:
+        key_prompt = "API Key [*** (or 'none' to clear)]: "
+    else:
+        key_prompt = "API Key [optional]: "
     api_key_input = input(key_prompt).strip()
-    api_key = api_key_input if api_key_input else current.api_key
+    if api_key_input.lower() in ("none", "clear", "empty"):
+        api_key = ""
+    elif api_key_input:
+        api_key = api_key_input
+    else:
+        api_key = current.api_key
 
     print(f"\n\033[94m[TESTING]\033[0m Verifying endpoint at {base_url}/models ...")
     ok, err, discovered_models = verify_models_endpoint(base_url=base_url, api_key=api_key)
