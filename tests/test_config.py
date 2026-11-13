@@ -200,8 +200,8 @@ def test_interactive_setup_clear_existing_api_key(tmp_path, monkeypatch):
     # Prepopulate with existing key
     save_config(Config(base_url="https://api.openai.com/v1", api_key="sk-old-secret"), settings_path=settings_file)
 
-    # User enters local URL, types 'none' to clear the key, and skips TUI
-    user_inputs = iter(["http://localhost:11434/v1", "none", "n"])
+    # User enters local URL, types '-' to clear the key, and skips TUI
+    user_inputs = iter(["http://localhost:11434/v1", "-", "n"])
     monkeypatch.setattr("builtins.input", lambda _: next(user_inputs))
 
     verified_calls = []

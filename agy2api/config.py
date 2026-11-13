@@ -165,18 +165,16 @@ def verify_models_endpoint(base_url: str, api_key: str, timeout: float = 6.0) ->
 def interactive_setup(settings_path: Path | None = None) -> Config:
     current = load_config(settings_path=settings_path)
     print("\n\033[1;36m=== agy2api Setup Wizard ===\033[0m")
-    print("\033[90mConfigure your upstream OpenAI-compatible provider.\033[0m\n")
+    print("\033[90mConfigure your upstream OpenAI-compatible provider.")
+    print("(Press Enter to keep current value, or '-' to clear)\033[0m\n")
 
     base_url_input = input(f"Base URL [{current.base_url}]: ").strip()
     base_url = base_url_input if base_url_input else current.base_url
     base_url = base_url.rstrip("/")
 
-    if current.api_key:
-        key_prompt = "API Key [*** (or 'none' to clear)]: "
-    else:
-        key_prompt = "API Key [optional]: "
+    key_prompt = f"API Key [{'***' if current.api_key else 'optional'}]: "
     api_key_input = input(key_prompt).strip()
-    if api_key_input.lower() in ("none", "clear", "empty"):
+    if api_key_input in ("-", "none", "clear", "empty"):
         api_key = ""
     elif api_key_input:
         api_key = api_key_input
