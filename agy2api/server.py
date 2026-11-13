@@ -98,7 +98,7 @@ def create_app(
     client = http_client or httpx.AsyncClient(timeout=120.0)
     catalog = ModelCatalog(config=config, http_client=client)
 
-    log_file = os.path.expanduser("~/.gemini/antigravity-cli/proxy.log")
+    log_file = os.path.expanduser("~/.gemini/agy2api.log")
 
     def log_line(msg: str):
         try:

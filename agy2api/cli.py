@@ -219,7 +219,11 @@ def main(args: Optional[List[str]] = None) -> int:
         return 0
 
     if "--logs" in argv:
-        log_path = Path.home() / ".gemini" / "antigravity-cli" / "proxy.log"
+        log_path = Path.home() / ".gemini" / "agy2api.log"
+        if not log_path.is_file():
+            legacy_log = Path.home() / ".gemini" / "antigravity-cli" / "proxy.log"
+            if legacy_log.is_file():
+                log_path = legacy_log
         if log_path.is_file():
             lines = log_path.read_text(encoding="utf-8", errors="ignore").splitlines()
             tail = lines[-50:] if len(lines) > 50 else lines

@@ -10,7 +10,13 @@ DEFAULT_BASE_URL = "https://openrouter.ai/api/v1"
 DEFAULT_MODEL = ""
 
 def default_settings_path() -> Path:
-    return Path.home() / ".gemini" / "antigravity-cli" / "settings.json"
+    root_settings = Path.home() / ".gemini" / "settings.json"
+    if root_settings.is_file():
+        return root_settings
+    legacy_settings = Path.home() / ".gemini" / "antigravity-cli" / "settings.json"
+    if legacy_settings.is_file():
+        return legacy_settings
+    return root_settings
 
 @dataclass
 class Config:

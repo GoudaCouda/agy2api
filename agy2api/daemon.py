@@ -10,7 +10,7 @@ import httpx
 from agy2api.config import Config, load_config
 
 def default_state_path() -> Path:
-    return Path.home() / ".gemini" / "antigravity-cli" / "agy2api.state.json"
+    return Path.home() / ".gemini" / "agy2api.state.json"
 
 class DaemonManager:
     def __init__(self, port: int = 4040, state_file: Optional[Path] = None):

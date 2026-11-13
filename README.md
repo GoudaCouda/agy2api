@@ -84,13 +84,31 @@ pip install --user .
 pip install -e .
 ```
 
+> **Run From Anywhere**: Once installed via `uv tool`, `pipx`, or `pip`, `agy2api` and `api2agy` are global commands in your PATH. You can run them from any directory or repository on your machine — you do **not** need to be inside the cloned `agy2api` folder.
+>
+> **Cross-Platform**: Fully compatible with both **Windows** (PowerShell, CMD, Windows Terminal) and **Linux** (Bash, Zsh) as well as macOS.
+
+---
+
+## How to Run
+
+Choose whichever Antigravity target you want to use:
+
+| Target | Command | Notes |
+| :--- | :--- | :--- |
+| **Antigravity CLI** | `agy2api` | Drop-in replacement for `agy` in your terminal. |
+| **Antigravity Desktop IDE** | `agy2api --ide` | Launches the VS Code-based editor. |
+| **Antigravity Desktop App** | `agy2api --app` | Launches the standalone desktop chat client. |
+
+> **Model Override**: You can append `--model <model_id>` to any command above to run a specific model for that session (e.g. `agy2api --ide --model deepseek-chat`).
+
 ---
 
 ## Quick Start
 
-### 1. Interactive Setup Wizard
+### 1. Configure Your Provider (One-time Setup)
 
-Configure your upstream OpenAI-compatible provider credentials with a styled terminal setup:
+Run the interactive setup wizard:
 
 ```bash
 agy2api --setup
@@ -104,7 +122,7 @@ You will be prompted for:
 - **Model Selection TUI**: optionally launch the interactive 32-model manager to pick models from your provider
 - **Default Model**: choose any model from your provider or curated list
 
-Settings are saved directly to `~/.gemini/antigravity-cli/settings.json`.
+Settings are saved directly to `~/.gemini/settings.json` (shared across Antigravity CLI, IDE, and Desktop App).
 
 *(Alternatively, you can export standard environment variables: `OPENAI_BASE_URL` and `OPENAI_API_KEY`.)*
 
@@ -112,13 +130,13 @@ Settings are saved directly to `~/.gemini/antigravity-cli/settings.json`.
 
 ### 2. Interactive Model Manager (TUI)
 
-Launch the interactive 32-Model Manager anytime to customize the models displayed in your Antigravity IDE and App:
+Manage which models show up in your Antigravity IDE and App model picker:
 
 ```bash
 agy2api --model-setup
 ```
 
-- **Type** any characters to live fuzzy-search your upstream provider's models.
+- **Type** to live fuzzy-search your upstream provider's models.
 - **[Enter]**: Add the highlighted model to your active 32-model list.
 - **[Tab]**: Switch to the Selected list to inspect your models.
 - **[Del] / [Backspace]**: Remove any model from the list.
@@ -126,43 +144,7 @@ agy2api --model-setup
 
 ---
 
-### 3. Usage Examples
-
-#### Run the Antigravity CLI (`agy`)
-Use `agy2api` as a drop-in launcher for `agy`:
-
-```bash
-# Start an interactive CLI session
-agy2api
-
-# Run with a prompt
-agy2api "Inspect the repository and write tests"
-
-# Override the model for just this session
-agy2api --model deepseek-chat "Write an asynchronous TCP server"
-```
-
-#### Launch Antigravity Desktop IDE (VS Code based)
-```bash
-# Launch the IDE connected to your proxy (proxy auto-stops when IDE window closes)
-agy2api --ide
-
-# Launch the IDE with a specific active model
-agy2api --ide --model anthropic/claude-3.5-sonnet
-```
-
-#### Launch Antigravity Desktop App (Electron client)
-```bash
-# Launch the desktop app connected to your proxy (proxy auto-stops when App window closes)
-agy2api --app
-
-# Launch the desktop app with a specific model
-agy2api --app --model openai/gpt-4o
-```
-
----
-
-### 4. Search Live Models in Terminal
+### 3. Search Live Models in Terminal
 
 Quickly check what models are available upstream without opening a browser:
 
@@ -179,7 +161,7 @@ agy2api models
 
 ---
 
-### 5. Daemon & Proxy Management
+### 4. Daemon & Proxy Management
 
 By default, launching `agy2api`, `--ide`, or `--app` automatically manages the proxy attached to your terminal session. You can also inspect or manage the background proxy manually:
 
