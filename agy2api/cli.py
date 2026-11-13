@@ -211,11 +211,17 @@ def main(args: Optional[List[str]] = None) -> int:
             if state:
                 print(f"  PID: {state.get('pid')}")
             print(f"  Upstream: {cfg.base_url}")
-            print(f"  Default Model: {cfg.default_model}")
+            if cfg.default_model:
+                print(f"  Default Model: {cfg.default_model}")
+            if cfg.selected_models:
+                print(f"  Selected Models ({len(cfg.selected_models)}): {', '.join(cfg.selected_models[:4])}{'...' if len(cfg.selected_models) > 4 else ''}")
         else:
             print("[STATUS] agy2api proxy is NOT running.")
             print(f"  Configured Upstream: {cfg.base_url}")
-            print(f"  Configured Model: {cfg.default_model}")
+            if cfg.default_model:
+                print(f"  Configured Model: {cfg.default_model}")
+            if cfg.selected_models:
+                print(f"  Selected Models ({len(cfg.selected_models)}): {', '.join(cfg.selected_models[:4])}{'...' if len(cfg.selected_models) > 4 else ''}")
         return 0
 
     if "--logs" in argv:

@@ -50,19 +50,21 @@ def resolve_model(
     requested_model: str,
     default_model: str,
     override_model: Optional[str] = None,
+    available_models: Optional[List[str]] = None,
 ) -> str:
     """Resolve incoming model identifier to the actual upstream model ID."""
     if override_model:
         return override_model.strip()
 
     cleaned = requested_model.removeprefix("models/").split(":")[0].strip()
+    fallback = default_model or (available_models[0] if available_models else "")
     if not cleaned:
-        return default_model
+        return fallback
 
-    # Built-in Antigravity default names map to user's configured default model
+    # Built-in Antigravity default names map to configured model or first selected model
     cleaned_lower = cleaned.lower()
     if cleaned_lower in ("default", "custom") or cleaned_lower.startswith(("gemini", "claude-sonnet-", "gpt-oss-")):
-        return default_model
+        return fallback or cleaned
 
     return cleaned
 
@@ -80,7 +82,12 @@ def get_upstream_request_params(
         payload = payload["request"]
 
     override_header = request.headers.get("x-upstream-model")
-    target_model = resolve_model(model_path, config.default_model, override_model=override_header)
+    target_model = resolve_model(
+        model_path,
+        config.default_model,
+        override_model=override_header,
+        available_models=config.selected_models,
+    )
     openai_req = gemini_to_openai_request(payload, target_model)
 
     url = f"{config.base_url.rstrip('/')}/chat/completions"

@@ -18,8 +18,8 @@ def test_fuzzy_score():
 
 def test_non_interactive_fallback():
     upstream = ["model-1", "model-2", "model-3"]
-    # In non-interactive environment (e.g. pytest without tty), it returns initial_selected or adds default
-    res = run_model_manager_tui(upstream, initial_selected=["model-1"], default_model="model-2")
+    # In non-interactive environment (e.g. pytest without tty), it returns initial_selected directly
+    res = run_model_manager_tui(upstream, initial_selected=["model-1", "model-2"])
     assert "model-1" in res
     assert "model-2" in res
 

@@ -113,8 +113,6 @@ def run_model_manager_tui(
 ) -> List[str]:
     """Launch the interactive 32-Model Manager Terminal UI."""
     selected: List[str] = list(initial_selected or [])
-    if default_model and default_model not in selected and len(selected) < 32:
-        selected.insert(0, default_model)
 
     # Check if stdout/stdin is interactive
     if not sys.stdout.isatty() or not sys.stdin.isatty():

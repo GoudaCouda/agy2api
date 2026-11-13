@@ -13,3 +13,4 @@ docs/agents/
 aistudiokey.txt
 .env
 AGENTS.md
+.clean-install-audit/

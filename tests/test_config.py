@@ -140,7 +140,7 @@ def test_interactive_setup_fails_when_no_models(tmp_path, monkeypatch):
 
 def test_interactive_setup(tmp_path, monkeypatch):
     settings_file = tmp_path / "settings.json"
-    user_inputs = iter(["https://api.groq.com/openai/v1", "gsk-testkey", "n", "llama-3.3-70b-versatile"])
+    user_inputs = iter(["https://api.groq.com/openai/v1", "gsk-testkey", "n"])
     monkeypatch.setattr("builtins.input", lambda _: next(user_inputs))
 
     # Mock verify_models_endpoint to return simulated models
@@ -156,12 +156,12 @@ def test_interactive_setup(tmp_path, monkeypatch):
     assert verified_calls == [("https://api.groq.com/openai/v1", "gsk-testkey")]
     assert cfg.base_url == "https://api.groq.com/openai/v1"
     assert cfg.api_key == "gsk-testkey"
-    assert cfg.default_model == "llama-3.3-70b-versatile"
+    assert cfg.selected_models == ["llama-3.3-70b-versatile"]
 
     # Verify written to file
     saved = load_config(settings_path=settings_file)
     assert saved.base_url == "https://api.groq.com/openai/v1"
     assert saved.api_key == "gsk-testkey"
-    assert saved.default_model == "llama-3.3-70b-versatile"
+    assert saved.selected_models == ["llama-3.3-70b-versatile"]
 
 

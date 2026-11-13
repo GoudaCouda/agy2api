@@ -120,7 +120,6 @@ You will be prompted for:
 - **Base URL**: e.g. `https://openrouter.ai/api/v1`, `https://api.deepseek.com/v1`, or `http://localhost:11434/v1`
 - **API Key**: your provider API key
 - **Model Selection TUI**: optionally launch the interactive 32-model manager to pick models from your provider
-- **Default Model**: choose any model from your provider or curated list
 
 Settings are saved directly to `~/.gemini/settings.json` (shared across Antigravity CLI, IDE, and Desktop App).
 

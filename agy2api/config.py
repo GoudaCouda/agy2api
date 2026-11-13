@@ -189,35 +189,16 @@ def interactive_setup(settings_path: Path | None = None) -> Config:
             selected_models = run_model_manager_tui(
                 upstream_models=discovered_models,
                 initial_selected=selected_models,
-                default_model=current.default_model,
             )
         except Exception as e:
             print(f"[WARN] Could not launch TUI ({e}). Continuing with standard setup.")
-
-    # Determine default model
-    if selected_models and not current.default_model:
-        suggested_default = selected_models[0]
-    elif current.default_model:
-        suggested_default = current.default_model
-    elif discovered_models:
-        suggested_default = discovered_models[0]
-    else:
-        suggested_default = ""
-
-    default_prompt = f"Default Model [{suggested_default}]: " if suggested_default else "Default Model: "
-    model_input = input(default_prompt).strip()
-    default_model = model_input if model_input else suggested_default
-
-    # Ensure default model is in selected_models if any are selected
-    if default_model and selected_models and default_model not in selected_models:
-        if len(selected_models) >= 32:
-            selected_models.pop()
-        selected_models.insert(0, default_model)
+    elif not selected_models and discovered_models:
+        selected_models = discovered_models[:32]
 
     new_config = Config(
         base_url=base_url,
         api_key=api_key,
-        default_model=default_model,
+        default_model="",
         port=current.port,
         selected_models=selected_models,
     )
