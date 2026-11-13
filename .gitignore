@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.scratch/
+docs/agents/
+*.db
+*.sqlite
+*.mitm
+aistudiokey.txt
+.env
+AGENTS.md

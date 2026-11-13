@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agy2api"
+version = "0.1.0"
+description = "Transparent translation proxy and launcher connecting Google Antigravity to any OpenAI-compatible provider"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Austin Boos" }]
+dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn>=0.28.0",
+    "httpx>=0.27.0",
+    "pydantic>=2.6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+]
+
+[project.scripts]
+agy2api = "agy2api.cli:main"
+api2agy = "agy2api.cli:main"
+agy-setup = "agy2api.cli:setup_main"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["."]
